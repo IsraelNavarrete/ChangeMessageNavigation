@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.changemessageFragment.ChangeMessageApplication;
 import com.example.changemessageFragment.R;
@@ -27,10 +30,10 @@ import com.example.changemessageFragment.model.Message;
  *
  * @author Israel Navarrete
  * @version 1.0
- * @see ViewMessageActivity#onCreate(Bundle)
+ * @see MainActivity#onCreate(Bundle)
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SendMessageFragment.ShowMessageListener {
 
     private static final String TAG = "SendMessageActivity";
 
@@ -44,15 +47,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "SendMessageActivity: onCreate()");
 
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
 
+        //Creamos un fragment de la clase SendMessage
+        SendMessageFragment fragment = new SendMessageFragment();
+
+        ft.add(R.id.content, fragment,SendMessageFragment.TAG);
+        //Hacemos el commit para que se guarde completamente
+        ft.commit();
     }
 
-    /**
-     * Método que se ejecuta cuando se pulsa el boton btAbout
-     * Se ha implementado mediante el atributo android:onclick en
-     * activity sendmessage.
-     * @param view botón donde de ha realizado click
-     */
+
 
     //region Ciclo de vida de la Activity
     @Override
@@ -90,6 +96,35 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "SendMessageActivity: onDestroy()");
 
     }
+
+    /**
+     * Método de la interfaz SendMessageFragment.ShowMessage
+     * @param message
+     */
+    @Override
+    public void showMessage(Message message) {
+        Toast.makeText(this,"Mensaje"+message.toString(),Toast.LENGTH_LONG).show();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        //Creamos un fragment de la clase SendMessage
+        //ViewMessageFragment fragment = new ViewMessageFragment();
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("message",message);
+
+        //Se utiliza el método estático de inicializacion de la clase fragment
+        ViewMessageFragment fragment = ViewMessageFragment.newInstance(bundle);
+
+        fragment.setArguments(bundle);
+        ft.replace(R.id.content,fragment,ViewMessageFragment.TAG);
+        //Hacemos el commit para que se guarde completamente
+        ft.commit();
+    }
+
+
 //endregion de
 
 }

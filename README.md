@@ -31,3 +31,34 @@ Borramos to.do el xml y lo reemplazamos por un frame layout
 Cambiamos el nombre de SendMessageActivity a MainActivity y su activity igual
 
 Copiamos el codigo de mainactivity a SendMessageFragment y cambiamos los this por getActivity()
+
+
+20/10
+
+1º
+Copiamos la información del activity_send_message al fragment y borramos el activity
+
+Copiamos la informacion del ViewMessageActivity al fragment y borramos el activity (no toda la clase)
+
+2º
+Explicacion librerias de soporte de fragments
+
+https://moronlu18.com/wordpress/courses/deint/178-1997
+
+3º
+En main activity creamos el fragment manager y el fragment transaction
+
+Añadimos en activity_main una id
+
+Creamos una nueva interfaz y añadimos el metodo onAttach(context)
+
+Obligamos que la clase que use la SendMessageFragment de error si no implementa la interfaz.
+Tambien creamos un objeto de tipo ShowListenerMessage
+
+Si da error recogemos el error y lanzamos un error personalizado donde le decimos que implemente la interfaz
+
+4º
+Implementamos la interfaz en mainActivity y sobreescribimos el metodo
+
+Recogemos la informacion del bundle en ViewMessageFragment
+
