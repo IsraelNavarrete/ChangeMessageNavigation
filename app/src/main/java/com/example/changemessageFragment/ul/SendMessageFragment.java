@@ -8,16 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.example.changemessageFragment.ChangeMessageApplication;
 import com.example.changemessageFragment.R;
 import com.example.changemessageFragment.model.Message;
+
+import java.util.Random;
 
 
 public class SendMessageFragment extends Fragment {
@@ -27,7 +31,9 @@ public class SendMessageFragment extends Fragment {
     private EditText edMessage;
     private SeekBar skSize;
     private ShowMessageListener callback;
-
+    private Button btAbout;
+    //Atributo de instancia que no pertenece al diseño
+    private int number;
 
     /**
      * Interfaz que debe implemetar toda clase que necesite el objeto message
@@ -53,11 +59,15 @@ public class SendMessageFragment extends Fragment {
         {
             throw  new ClassCastException(getActivity().toString() + "must implement ShowMessageListener");
         }
+        Log.i(TAG, "SendMessageFragment: onAttach()");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "SendMessageFragment: onCreate()");
+        setRetainInstance(true);
+        number = new Random().nextInt(101);
     }
 
     @Override
@@ -68,13 +78,16 @@ public class SendMessageFragment extends Fragment {
         btSendMessage = view.findViewById(R.id.btSendMessage);
         edMessage = view.findViewById(R.id.edMessage);
         skSize = view.findViewById(R.id.skSize);
-
+        btAbout=view.findViewById(R.id.btAbout);
+        Log.i(TAG, "SendMessageFragment: onCreateView()");
         return view;
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toast.makeText(getActivity(), "numero generado:"+number,Toast.LENGTH_SHORT).show();
         btSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,13 +95,73 @@ public class SendMessageFragment extends Fragment {
                 Message message = new Message(((ChangeMessageApplication)getActivity().getApplication()).getUser(),
                         edMessage.getText().toString(),"16/10/2020",skSize.getProgress());
                 callback.showMessage(message);
+                Log.i(TAG, "SendMessageFragment: onViewCreated()");
             }
         });
 
+        btAbout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
     public void showAbout(View view){
         Intent intent = new Intent(getActivity(), AboutActivity.class);
         startActivity(intent);
     }
+
+    //region Método ciclo de vida
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "SendMessageFragment: onStart()");
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "SendMessageFragment: onResume()");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "SendMessageFragment: onPause()");
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "SendMessageFragment: onSaveInstanceState()");
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.i(TAG, "SendMessageFragment: onViewStateRestored()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "SendMessageFragment: onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "SendMessageFragment: onDestroy()");
+
+    }
+    //endregion
+
 }

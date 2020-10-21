@@ -9,9 +9,12 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.savedstate.SavedStateRegistryOwner;
 
 import com.example.changemessageFragment.ChangeMessageApplication;
 import com.example.changemessageFragment.R;
@@ -36,7 +39,7 @@ import com.example.changemessageFragment.model.Message;
 public class MainActivity extends AppCompatActivity implements SendMessageFragment.ShowMessageListener {
 
     private static final String TAG = "SendMessageActivity";
-
+    private Fragment sendMessageFragment;
 
 
     @Override
@@ -46,16 +49,37 @@ public class MainActivity extends AppCompatActivity implements SendMessageFragme
 
 
         Log.i(TAG, "SendMessageActivity: onCreate()");
+        //Se comprueba si el fragment existe o no, cuando hay un cambio
+        //de configuracion. Se puede realizar de 2 formas
+        //1. Si la actividad no viene de un cambio de configuracion if (savedInstanceState==null)
+       /* if (savedInstanceState==null) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+            //Creamos un fragment de la clase SendMessage
+            SendMessageFragment fragment = new SendMessageFragment();
 
-        //Creamos un fragment de la clase SendMessage
-        SendMessageFragment fragment = new SendMessageFragment();
+            ft.add(R.id.content, fragment, SendMessageFragment.TAG);
 
-        ft.add(R.id.content, fragment,SendMessageFragment.TAG);
-        //Hacemos el commit para que se guarde completamente
-        ft.commit();
+            //Antes de hacer commit, se debe guardar la transacción para que cuando se pulse
+            //el boton back se vuelva al estado anterior, es decir, al fragment
+            //SendMessageFragment
+            ft.addToBackStack(null);
+
+            //Hacemos el commit para que se guarde completamente
+            ft.commit();
+        }*/
+       //2. Es buscar en el fragment en el FragmentManager a través del TAG
+       FragmentManager fm = getSupportFragmentManager();
+       sendMessageFragment= fm.findFragmentByTag(SendMessageFragment.TAG);
+       if (sendMessageFragment==null)
+       {
+           FragmentTransaction ft = fm.beginTransaction();
+           sendMessageFragment = new SendMessageFragment();
+           ft.add(R.id.content, sendMessageFragment, SendMessageFragment.TAG);
+           ft.commit();
+       }
+
     }
 
 
@@ -76,11 +100,25 @@ public class MainActivity extends AppCompatActivity implements SendMessageFragme
 
     }
 
+    //Callback donde se debe guardar el estado dinámico de la actividad
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "SendMessageActivity: onSaveInstanceState()");
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "SendMessageActivity: onPause()");
 
+    }
+
+    //Callback donde se restaura el estado dinámico de la actividad
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i(TAG, "SendMessageActivity: onRestoreInstanceState()");
     }
 
     @Override
