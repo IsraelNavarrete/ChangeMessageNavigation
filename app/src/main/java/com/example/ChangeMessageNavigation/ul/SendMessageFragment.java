@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,14 +52,6 @@ public class SendMessageFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        //Obligamos a implemetar la interfaz
-        try {
-            callback = (ShowMessageListener) context;
-        }
-        catch (ClassCastException e)
-        {
-            throw  new ClassCastException(getActivity().toString() + "must implement ShowMessageListener");
-        }
         Log.i(TAG, "SendMessageFragment: onAttach()");
     }
 
@@ -80,7 +73,7 @@ public class SendMessageFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Buscamos por ID
         btSendMessage = view.findViewById(R.id.btSendMessage);
@@ -92,25 +85,40 @@ public class SendMessageFragment extends Fragment {
         btSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+               // Bundle bundle = new Bundle();
                 //1.1 Crear un objeto message
+                //Message message = new Message(((ChangeMessageApplication)getActivity().getApplication()).getUser(),
+                //        edMessage.getText().toString(),"16/10/2020",skSize.getProgress());
+                //bundle.putSerializable("message",message);
+
+                //Ejemplo 1
                 Message message = new Message(((ChangeMessageApplication)getActivity().getApplication()).getUser(),
-                        edMessage.getText().toString(),"16/10/2020",skSize.getProgress());
-                callback.showMessage(message);
-                Log.i(TAG, "SendMessageFragment: onViewCreated()");
+                                                edMessage.getText().toString(),"16/10/2020",skSize.getProgress());
+                //Creamos un objeto de la accion en el cual guardamos el mensaje directamente
+                SendMessageFragmentDirections.ActionSendMessageFragmentToViewMessageFragment action =
+                        SendMessageFragmentDirections.actionSendMessageFragmentToViewMessageFragment(message);
+
+                //Esta linea va desde SendMessage hasta viewMessage y le pasamos la accion
+                NavHostFragment.findNavController(SendMessageFragment.this).navigate(action);
             }
         });
 
         btAbout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                showAbout();
             }
         });
 
+        Log.i(TAG, "SendMessageFragment: onViewCreated()");
     }
-    public void showAbout(View view){
-        Intent intent = new Intent(getActivity(), AboutActivity.class);
-        startActivity(intent);
+
+    /**
+     * Metodo que se ejecuta con el boton btAbout y enseña informacion de la aplicacion
+     */
+    public void showAbout(){
+        NavHostFragment.findNavController(this).navigate(R.id.action_sendMessageFragment_to_aboutActivity);
     }
 
     //region Método ciclo de vida

@@ -29,50 +29,16 @@ import com.example.ChangeMessageNavigation.model.Message;
  * @see MainActivity#onCreate(Bundle)
  */
 
-public class MainActivity extends AppCompatActivity implements SendMessageFragment.ShowMessageListener {
+public class MainActivity extends AppCompatActivity  {
 
     private static final String TAG = "SendMessageActivity";
-    private Fragment sendMessageFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         Log.i(TAG, "SendMessageActivity: onCreate()");
-        //Se comprueba si el fragment existe o no, cuando hay un cambio
-        //de configuracion. Se puede realizar de 2 formas
-        //1. Si la actividad no viene de un cambio de configuracion if (savedInstanceState==null)
-       /* if (savedInstanceState==null) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-
-            //Creamos un fragment de la clase SendMessage
-            SendMessageFragment fragment = new SendMessageFragment();
-
-            ft.add(R.id.content, fragment, SendMessageFragment.TAG);
-
-            //Antes de hacer commit, se debe guardar la transacción para que cuando se pulse
-            //el boton back se vuelva al estado anterior, es decir, al fragment
-            //SendMessageFragment
-            ft.addToBackStack(null);
-
-            //Hacemos el commit para que se guarde completamente
-            ft.commit();
-        }*/
-       //2. Es buscar en el fragment en el FragmentManager a través del TAG
-       FragmentManager fm = getSupportFragmentManager();
-       sendMessageFragment= fm.findFragmentByTag(SendMessageFragment.TAG);
-       if (sendMessageFragment==null)
-       {
-           FragmentTransaction ft = fm.beginTransaction();
-           sendMessageFragment = new SendMessageFragment();
-           ft.add(R.id.content, sendMessageFragment, SendMessageFragment.TAG);
-           ft.commit();
-       }
-
     }
 
 
@@ -127,34 +93,6 @@ public class MainActivity extends AppCompatActivity implements SendMessageFragme
         Log.i(TAG, "SendMessageActivity: onDestroy()");
 
     }
-
-    /**
-     * Método de la interfaz SendMessageFragment.ShowMessage
-     * @param message
-     */
-    @Override
-    public void showMessage(Message message) {
-        Toast.makeText(this,"Mensaje"+message.toString(),Toast.LENGTH_LONG).show();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        //Creamos un fragment de la clase SendMessage
-        //ViewMessageFragment fragment = new ViewMessageFragment();
-
-
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("message",message);
-
-        //Se utiliza el método estático de inicializacion de la clase fragment
-        ViewMessageFragment fragment = ViewMessageFragment.newInstance(bundle);
-
-        fragment.setArguments(bundle);
-        ft.replace(R.id.content,fragment,ViewMessageFragment.TAG);
-        //Hacemos el commit para que se guarde completamente
-        ft.commit();
-    }
-
 
 //endregion de
 

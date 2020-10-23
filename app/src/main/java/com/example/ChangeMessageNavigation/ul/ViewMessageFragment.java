@@ -28,15 +28,6 @@ public class ViewMessageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ViewMessageFragment newInstance(Bundle bundle) {
-        ViewMessageFragment v = new ViewMessageFragment();
-        if (bundle!=null)
-        {
-            v.setArguments(bundle);
-        }
-        return v;
-    }
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,18 +56,23 @@ public class ViewMessageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ViewMessageFragment: onViewCreated()");
 
-
         //Error null pointer hay que coger el id del view no de la activity
         tvMessage = view.findViewById(R.id.tvMessage);
         Bundle bundle = getArguments();
+
+        //Ejemplo 1: Recibe los argumentos a traves del bundle
+
         //tenemos que comprobar si el objeto tiene valores
-        if (bundle != null)
-        {
+        //if (bundle != null)
+        //{
             //Actualizamos el texto y el tamaño
-            Message message = (Message)bundle.getSerializable("message");
-            tvMessage.setText(message.getMessage());
-            tvMessage.setTextSize(message.getSize());
-        }
+        //    Message message = (Message)bundle.getSerializable("message");
+        //    tvMessage.setText(message.getMessage());
+        //   tvMessage.setTextSize(message.getSize());
+        //}
+        Message message = ViewMessageFragmentArgs.fromBundle(bundle).getMessage();
+        tvMessage.setText(message.getMessage());
+        tvMessage.setTextSize(message.getSize());
 
     }
 
