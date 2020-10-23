@@ -1,4 +1,4 @@
-package com.example.changemessageFragment.model;
+package com.example.ChangeMessageNavigation.model;
 
 import java.io.Serializable;
 

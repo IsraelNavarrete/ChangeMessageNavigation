@@ -1,10 +1,10 @@
-package com.example.changemessageFragment.ul;
+package com.example.ChangeMessageNavigation.ul;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.changemessageFragment.R;
+import com.example.ChangeMessageNavigation.R;
 import com.vansuita.materialabout.builder.AboutBuilder;
 import com.vansuita.materialabout.views.AboutView;
 

@@ -1,4 +1,4 @@
-package com.example.changemessageFragment.ul;
+package com.example.ChangeMessageNavigation.ul;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +17,9 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.example.changemessageFragment.ChangeMessageApplication;
-import com.example.changemessageFragment.R;
-import com.example.changemessageFragment.model.Message;
+import com.example.ChangeMessageNavigation.ChangeMessageApplication;
+import com.example.ChangeMessageNavigation.R;
+import com.example.ChangeMessageNavigation.model.Message;
 
 import java.util.Random;
 
@@ -74,19 +74,20 @@ public class SendMessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_send_message, container, false);
-        btSendMessage = view.findViewById(R.id.btSendMessage);
-        edMessage = view.findViewById(R.id.edMessage);
-        skSize = view.findViewById(R.id.skSize);
-        btAbout=view.findViewById(R.id.btAbout);
         Log.i(TAG, "SendMessageFragment: onCreateView()");
-        return view;
+        return inflater.inflate(R.layout.fragment_send_message, container, false);
 
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //Buscamos por ID
+        btSendMessage = view.findViewById(R.id.btSendMessage);
+        edMessage = view.findViewById(R.id.edMessage);
+        skSize = view.findViewById(R.id.skSize);
+        btAbout=view.findViewById(R.id.btAbout);
+
         Toast.makeText(getActivity(), "numero generado:"+number,Toast.LENGTH_SHORT).show();
         btSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override

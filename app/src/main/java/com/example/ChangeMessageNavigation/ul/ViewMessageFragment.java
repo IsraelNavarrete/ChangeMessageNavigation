@@ -1,4 +1,4 @@
-package com.example.changemessageFragment.ul;
+package com.example.ChangeMessageNavigation.ul;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.changemessageFragment.R;
-import com.example.changemessageFragment.model.Message;
+import com.example.ChangeMessageNavigation.R;
+import com.example.ChangeMessageNavigation.model.Message;
 
 
 public class ViewMessageFragment extends Fragment {
@@ -53,8 +53,19 @@ public class ViewMessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "ViewMessageFragment: onCreateView()");
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_view_message, container, false);
+        return inflater.inflate(R.layout.fragment_view_message, container, false);
+    }
+
+
+    //region Metodos ciclo de vida
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ViewMessageFragment: onViewCreated()");
+
+
         //Error null pointer hay que coger el id del view no de la activity
         tvMessage = view.findViewById(R.id.tvMessage);
         Bundle bundle = getArguments();
@@ -66,16 +77,7 @@ public class ViewMessageFragment extends Fragment {
             tvMessage.setText(message.getMessage());
             tvMessage.setTextSize(message.getSize());
         }
-        Log.i(TAG, "ViewMessageFragment: onCreateView()");
-        return view;
-    }
 
-
-    //region Metodos ciclo de vida
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ViewMessageFragment: onViewCreated()");
     }
 
     @Override

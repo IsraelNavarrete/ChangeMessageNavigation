@@ -1,4 +1,4 @@
-package com.example.changemessageFragment;
+package com.example.ChangeMessageNavigation;
 
 import org.junit.Test;
 

@@ -1,8 +1,8 @@
-package com.example.changemessageFragment;
+package com.example.ChangeMessageNavigation;
 
 import android.app.Application;
 
-import com.example.changemessageFragment.model.User;
+import com.example.ChangeMessageNavigation.model.User;
 
 public class ChangeMessageApplication extends Application {
     private User user;
